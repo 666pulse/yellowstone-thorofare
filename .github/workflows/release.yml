@@ -8,8 +8,9 @@ concurrency:
   cancel-in-progress: true
 
 on:
-  branch:
-    - master
+  push:
+    branches:
+      - master
   pull_request:
     paths:
       - '.github/workflows/release.yml'
