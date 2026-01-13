@@ -59,7 +59,10 @@ pub struct EndpointData {
 impl EndpointData {
     pub fn new(endpoint: String, slot_count: usize, buffer_percent: f32) -> Self {
         let capacity = Self::calculate_capacity(slot_count, buffer_percent);
-        let account_capacity = capacity * 350_000;
+        // Use a reasonable initial capacity for account updates instead of capacity * 350_000
+        // which could lead to massive memory allocation (e.g., 310 GB for 1000 slots)
+        // Account updates will grow dynamically as needed
+        let account_capacity = (slot_count * 100).min(1_000_000); // Max 1M initial capacity
 
         Self {
             updates: Vec::with_capacity(capacity),
